@@ -1,0 +1,48 @@
+﻿<Window x:Class="IdealSoftTestWPFClient.Views.CustomerEditorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IdealSoftTestWPFClient.Views"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="Editor de cliente" Height="330" Width="450">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadPhoneCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <StackPanel Margin="15">
+        <TextBlock Text="Nome"/>
+        <TextBox Text="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}"
+             Margin="0,0,0,10"/>
+
+        <TextBlock Text="Sobrenome"/>
+        <TextBox Text="{Binding Customer.LastName, UpdateSourceTrigger=PropertyChanged}"
+             Margin="0,0,0,20"/>
+
+        <TextBlock Text="Telefones"/>
+        <DataGrid ItemsSource="{Binding Phones}"
+              SelectedItem="{Binding SelectedPhone}"
+              AutoGenerateColumns="False"
+              Height="100" 
+              IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Número" Binding="{Binding Number}" />
+                <DataGridTextColumn Header="Tipo" Binding="{Binding Type}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Novo telefone" Command="{Binding NewPhoneCommand}" Margin="5,0"/>
+            <Button Content="Editar telefone" Command="{Binding EditPhoneCommand}" Margin="5,0"/>
+            <Button Content="Excluir telefone" Command="{Binding DeletePhoneCommand}" Margin="5,0"/>
+
+            <Button Content="Salvar" Command="{Binding SaveCommand}" Margin="5,0"/>
+            <Button Content="Cancelar" Command="{Binding CancelCommand}" Margin="5,0"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

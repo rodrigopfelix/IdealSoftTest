@@ -4,7 +4,7 @@ namespace IdealSoftTestServer.Application.Interfaces
 {
     public interface IPhoneService
     {
-        public Task<List<Phone>> GetPhonesByCustomerIdAsync(Guid customerId);
+        public Task<IList<Phone>> GetPhonesByCustomerIdAsync(Guid customerId);
 
         public Task<Phone?> GetPhoneByIdAsync(Guid phoneId);
 

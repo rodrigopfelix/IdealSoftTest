@@ -80,7 +80,7 @@ namespace IdealSoftTestServer.Api.Controllers
         public async Task<IActionResult> GetPhoneByIdAsync([FromRoute] Guid customerId, [FromRoute] Guid phoneId)
         {
             var phones = await _phoneService.GetPhonesByCustomerIdAsync(customerId);
-            var phone = phones.Find(p => p.Id == phoneId)
+            var phone = phones.FirstOrDefault(p => p.Id == phoneId)
                 ?? throw new KeyNotFoundException("Phone not found.");
             return Ok(phone);
         }
@@ -98,7 +98,7 @@ namespace IdealSoftTestServer.Api.Controllers
         public async Task<IActionResult> UpdatePhoneAsync([FromRoute] Guid customerId, [FromRoute] Guid phoneId, [FromBody] PhoneRequest request)
         {
             var phones = await _phoneService.GetPhonesByCustomerIdAsync(customerId);
-            var phone = phones.Find(p => p.Id == phoneId)
+            var phone = phones.FirstOrDefault(p => p.Id == phoneId)
                 ?? throw new KeyNotFoundException("Phone not found.");
 
             phone = await _phoneService.UpdatePhoneAsync(phoneId, request.RegionCode, request.Number, request.Type);
@@ -110,7 +110,7 @@ namespace IdealSoftTestServer.Api.Controllers
         public async Task<IActionResult> DeletePhoneAsync([FromRoute] Guid customerId, [FromRoute] Guid phoneId)
         {
             var phones = await _phoneService.GetPhonesByCustomerIdAsync(customerId);
-            var phone = phones.Find(p => p.Id == phoneId)
+            var phone = phones.FirstOrDefault(p => p.Id == phoneId)
                 ?? throw new KeyNotFoundException("Phone not found.");
             phone = await _phoneService.DeletePhoneAsync(phoneId);
             return Ok(phone);

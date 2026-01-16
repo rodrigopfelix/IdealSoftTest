@@ -6,7 +6,7 @@ namespace IdealSoftTestServer.Application.Interfaces
     {
         public Task<Customer> CreateCustomerAsync(string firstName, string lastName);
 
-        public Task<List<Customer>> GetAllCustomersAsync(int page, int pageSize);
+        public Task<IList<Customer>> GetAllCustomersAsync(int page, int pageSize);
 
         public Task<Customer?> GetCustomerByIdAsync(Guid customerId);
 

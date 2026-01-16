@@ -22,7 +22,7 @@ namespace IdealSoftTestServer.Application.Services
             return customer;
         }
 
-        public async Task<List<Customer>> GetAllCustomersAsync(int page, int pageSize)
+        public async Task<IList<Customer>> GetAllCustomersAsync(int page, int pageSize)
         {
             return await _context.Customers
                 .Where(c => c.DeletedAt == null)

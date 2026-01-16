@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="IdealSoftTestServer/IdealSoftTestServer.csproj" />
+  <Project Path="IdealSoftTestWPFClient/IdealSoftTestWPFClient.csproj" Id="69265e3b-d064-46be-af94-5a8e7480411a" />
 </Solution>

@@ -14,7 +14,7 @@ namespace IdealSoftTestServer.Application.Services
             _context = context;
         }
 
-        public async Task<List<Phone>> GetPhonesByCustomerIdAsync(Guid customerId)
+        public async Task<IList<Phone>> GetPhonesByCustomerIdAsync(Guid customerId)
         {
             var customer = await _context.Customers
                 .Include(c => c.Phones)
