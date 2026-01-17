@@ -1,12 +1,13 @@
 ﻿using IdealSoftTestServer.Application.DTOs.Customers;
 using IdealSoftTestServer.Application.DTOs.Phones;
 using IdealSoftTestServer.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdealSoftTestServer.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/customers")]
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _service;
@@ -18,6 +19,7 @@ namespace IdealSoftTestServer.Api.Controllers
             _phoneService = phoneService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetCustomersAsync([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
@@ -27,6 +29,7 @@ namespace IdealSoftTestServer.Api.Controllers
 
         #region CRUD Operations
 
+        [Authorize]
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetCustomerByIdAsync([FromRoute] Guid id)
@@ -36,6 +39,7 @@ namespace IdealSoftTestServer.Api.Controllers
             return Ok(customer);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateCustomerAsync([FromBody] CustomerRequest request)
         {
@@ -43,6 +47,7 @@ namespace IdealSoftTestServer.Api.Controllers
             return CreatedAtAction(nameof(GetCustomerByIdAsync), new { id = customer.Id }, customer);
         }
 
+        [Authorize]
         [HttpPut]
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdateCustomerAsync([FromRoute] Guid id, [FromBody] CustomerRequest request)
@@ -52,6 +57,7 @@ namespace IdealSoftTestServer.Api.Controllers
             return Ok(customer);
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("{id:guid}")]
         public async Task<IActionResult> DeleteCustomerAsync([FromRoute] Guid id)
@@ -64,7 +70,7 @@ namespace IdealSoftTestServer.Api.Controllers
         #endregion
 
         #region Phone Management
-
+        [Authorize]
         [HttpGet]
         [Route("{customerId:guid}/phones")]
         public async Task<IActionResult> GetPhonesByCustomerIdAsync([FromRoute] Guid customerId)
@@ -75,6 +81,7 @@ namespace IdealSoftTestServer.Api.Controllers
             return Ok(phones);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{customerId:guid}/phones/{phoneId:guid}")]
         public async Task<IActionResult> GetPhoneByIdAsync([FromRoute] Guid customerId, [FromRoute] Guid phoneId)
@@ -85,6 +92,7 @@ namespace IdealSoftTestServer.Api.Controllers
             return Ok(phone);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("{customerId:guid}/phones")]
         public async Task<IActionResult> AddPhoneToCustomerAsync([FromRoute] Guid customerId, [FromBody] PhoneRequest request)
@@ -93,6 +101,7 @@ namespace IdealSoftTestServer.Api.Controllers
             return CreatedAtAction(nameof(GetPhoneByIdAsync), new { customerId = customerId, phoneId = phone.Id }, phone);
         }
 
+        [Authorize]
         [HttpPut]
         [Route("{customerId:guid}/phones/{phoneId:guid}")]
         public async Task<IActionResult> UpdatePhoneAsync([FromRoute] Guid customerId, [FromRoute] Guid phoneId, [FromBody] PhoneRequest request)
@@ -105,6 +114,7 @@ namespace IdealSoftTestServer.Api.Controllers
             return Ok(phone);
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("{customerId:guid}/phones/{phoneId:guid}")]
         public async Task<IActionResult> DeletePhoneAsync([FromRoute] Guid customerId, [FromRoute] Guid phoneId)

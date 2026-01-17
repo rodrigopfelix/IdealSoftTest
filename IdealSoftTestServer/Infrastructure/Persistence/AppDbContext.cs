@@ -1,9 +1,12 @@
 ﻿using IdealSoftTestServer.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdealSoftTestServer.Infrastructure.Persistence
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext
+        : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Phone> Phones => Set<Phone>();
