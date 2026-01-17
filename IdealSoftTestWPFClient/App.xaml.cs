@@ -1,9 +1,12 @@
-﻿using IdealSoftTestWPFClient.Services;
+﻿using IdealSoftTestWPFClient.Models;
+using IdealSoftTestWPFClient.Services;
+using IdealSoftTestWPFClient.ViewModels;
 using IdealSoftTestWPFClient.ViewModels.Customers;
 using IdealSoftTestWPFClient.Views;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using System.Net.Http;
 using System.Windows;
 
 namespace IdealSoftTestWPFClient
@@ -17,17 +20,37 @@ namespace IdealSoftTestWPFClient
             base.OnStartup(e);
 
             _host = Host.CreateDefaultBuilder()
-                .ConfigureServices(services =>
+                .ConfigureAppConfiguration((context, config) =>
                 {
-                    // HttpClient + API
-                    var baseAddress = new Uri("http://localhost:5219/");
-                    services.AddHttpClient<ICustomerService, CustomerApiService>(c => { c.BaseAddress = baseAddress; });
-                    services.AddHttpClient<IPhoneService, PhoneApiService>(p => { p.BaseAddress = baseAddress; });
+                    config.SetBasePath(AppContext.BaseDirectory);
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    IConfiguration config = context.Configuration;
+                    services.Configure<ApiSettings>(config.GetSection("Api"));
 
-                    // ViewModels
+
+                    services.AddHttpClient("ApiClient", client =>
+                                {
+                                    client.BaseAddress = new Uri(config["Api:Url"]);
+                                })
+                            .AddHttpMessageHandler<AuthHttpMessageHandler>();
+                    
+                    services.AddScoped(sp =>
+                        sp.GetRequiredService<IHttpClientFactory>()
+                          .CreateClient("ApiClient"));
+
+                    services.AddScoped<IAuthService, AuthService>();
+                    services.AddScoped<ICustomerService, CustomerApiService>();
+                    services.AddScoped<IPhoneService, PhoneApiService>();
+
                     services.AddSingleton<CustomersViewModel>();
                     services.AddSingleton<CustomerPhoneEditorViewModel>();
+                    services.AddSingleton<ITokenStore, InMemoryTokenStore>();
+
                     services.AddTransient<CustomerEditorViewModel>();
+                    services.AddTransient<AuthHttpMessageHandler>();
                 })
                 .Build();
 
