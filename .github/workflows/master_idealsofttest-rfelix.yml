@@ -23,11 +23,14 @@ jobs:
         with:
           dotnet-version: '10.x'
 
+      - name: Restore
+        run: dotnet restore IdealSoftTestServer/IdealSoftTestServer.csproj
+
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build IdealSoftTestServer/IdealSoftTestServer.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish IdealSoftTestServer/IdealSoftTestServer.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -52,4 +55,5 @@ jobs:
           app-name: 'IdealSoftTest-RFelix'
           slot-name: 'Production'
           package: .
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4BB1727AEB4046B5A614F4A48E2E4737 }}
